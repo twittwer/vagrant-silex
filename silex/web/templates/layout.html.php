@@ -26,16 +26,36 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">WebSiteName</a>
+            <a class="navbar-brand" href="./home">Webengine</a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
-                <li class="active"><a href="#"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>&nbsp;Home<span class="sr-only">(current)</span></a></li>
-                <li><a href="#"><span class="glyphicon glyphicon-music" aria-hidden="true"></span>&nbsp;Music</a></li>
-                <li><a href="#"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp;Profile</a></li>
-                <li><a href="#"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span>&nbsp;Settings</a></li>
+                <li <?php echo(($view['slots']->get('title') == 'Home') ? 'class="active"' : '') ?>>
+                    <a href="./home">
+                        <span class="glyphicon glyphicon-home" aria-hidden="true"></span>&nbsp;Home
+                        <?php echo(($view['slots']->get('title') == 'Home') ? '<span class="sr-only">(current)</span>' : '') ?>
+                    </a>
+                </li>
+                <li <?php echo(($view['slots']->get('title') == 'Music') ? 'class="active"' : '') ?>>
+                    <a href="./music">
+                        <span class="glyphicon glyphicon-music" aria-hidden="true"></span>&nbsp;Music
+                        <?php echo(($view['slots']->get('title') == 'Music') ? '<span class="sr-only">(current)</span>' : '') ?>
+                    </a>
+                </li>
+                <li <?php echo(($view['slots']->get('title') == 'Profile') ? 'class="active"' : '') ?>>
+                    <a href="./profile">
+                        <span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp;Profile
+                        <?php echo(($view['slots']->get('title') == 'Profile') ? '<span class="sr-only">(current)</span>' : '') ?>
+                    </a>
+                </li>
+                <li <?php echo(($view['slots']->get('title') == 'Settings') ? 'class="active"' : '') ?>>
+                    <a href="./settings">
+                        <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>&nbsp;Settings
+                        <?php echo(($view['slots']->get('title') == 'Settings') ? '<span class="sr-only">(current)</span>' : '') ?>
+                    </a>
+                </li>
             </ul>
         </div>
         <!-- /.navbar-collapse -->

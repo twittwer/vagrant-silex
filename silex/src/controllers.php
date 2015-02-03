@@ -15,8 +15,23 @@ $app->get('/welcome-twig/{name}', function ($name) use ($app) {
     );
 });
 
-$app->get('/static', function () use ($app) {
-    return $app['templating']->render(
-        'home.html.php'
-    );
+
+//$app->get('/static', function () use ($app) {
+//    return $app['templating']->render('home.html.php');
+//});
+
+$app->get('/static/home', function () use ($app) {
+    return $app['templating']->render('home.html.php');
+});
+
+$app->get('/static/music', function () use ($app) {
+    return $app['templating']->render('music.html.php');
+});
+
+$app->get('/static/profile', function () use ($app) {
+    return $app['templating']->render('profile.html.php');
+});
+
+$app->get('/static/settings', function () use ($app) {
+    return $app['templating']->render('settings.html.php');
 });
