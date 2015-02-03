@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Webengine<?php $view['slots']->output('title', 'DEF') ?></title>
+    <title>Webengine | <?php $view['slots']->output('title') ?></title>
     <!-- Bootstrap - Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
     <!-- Bootstrap - Optional theme -->
@@ -32,12 +32,10 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
-                <li class="active"><a href="#"><span class="glyphicon glyphicon-home"
-                                                     aria-hidden="true"></span>Home<span
-                            class="sr-only">(current)</span></a></li>
-                <li><a href="#"><span class="glyphicon glyphicon-music" aria-hidden="true"></span> Music</a></li>
-                <li><a href="#"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Profile</a></li>
-                <li><a href="#"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Settings</a></li>
+                <li class="active"><a href="#"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>&nbsp;Home<span class="sr-only">(current)</span></a></li>
+                <li><a href="#"><span class="glyphicon glyphicon-music" aria-hidden="true"></span>&nbsp;Music</a></li>
+                <li><a href="#"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp;Profile</a></li>
+                <li><a href="#"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span>&nbsp;Settings</a></li>
             </ul>
         </div>
         <!-- /.navbar-collapse -->
