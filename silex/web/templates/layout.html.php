@@ -1,7 +1,12 @@
-<h1>
-    <?php $view['slots']->output('title', 'Default title') ?>
-</h1>
+<?php
+/**
+ * Created by PhpStorm.
+ * User: Tobias Wittwer
+ * Date: 03.02.2015
+ * Time: 20:43
+ */
+?>
 
-<hr/>
+<?php $view['slots']->output(' | '.'title', '') ?>
+
 <?php $view['slots']->output('_content') ?>
-<hr/>
