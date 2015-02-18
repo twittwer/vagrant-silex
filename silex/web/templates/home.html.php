@@ -1,13 +1,17 @@
 <?php
-/**
- * Created by PhpStorm.
+/** Template for Main Page (Home)
+ *
  * User: Tobias Wittwer
  * Date: 03.02.2015
  * Time: 20:41
+ *
+ * @var $view \Symfony\Component\Templating\PhpEngine
+ * @var $slots \Symfony\Component\Templating\Helper\SlotsHelper
  */
 
+$slots = $view['slots'];
 $view->extend('layout.html.php');
-$view['slots']->set('title', "Home");
+$slots->set('title', "Home");
 ?>
 
 <div class="row">
@@ -17,7 +21,8 @@ $view['slots']->set('title', "Home");
 
             <p>Lorem ipsum dolor sit amet, consetetur sadipscing.</p>
 
-            <p><a class="btn btn-primary btn-lg" role="button" href="http://www.google.com/"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> Search</a></p>
+            <p><a class="btn btn-primary btn-lg" role="button" href="http://www.google.com/"><span
+                        class="glyphicon glyphicon-search" aria-hidden="true"></span> Search</a></p>
         </div>
     </div>
 </div>

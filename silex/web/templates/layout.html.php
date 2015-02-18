@@ -1,6 +1,11 @@
 <?php
-/** Main Layout Template */
-$title = $view['slots']->get('title');
+/** Main Layout Template
+ * @var $view \Symfony\Component\Templating\PhpEngine
+ * @var $slots \Symfony\Component\Templating\Helper\SlotsHelper
+ */
+
+$slots = $view['slots'];
+$title = $slots->get('title');
 ?>
 <!DOCTYPE html>
 <html>
@@ -19,6 +24,7 @@ $title = $view['slots']->get('title');
     <!-- Bootstrap - JavaScript -->
     <script src="/vendor/bootstrap/dist/js/bootstrap.min.js"></script>
     <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>-->
+    <base href="http://localhost:8001/static/">
 </head>
 <body>
 <nav class="navbar navbar-inverse">
@@ -62,6 +68,12 @@ $title = $view['slots']->get('title');
                         <?php echo($title == 'Settings' ? '<span class="sr-only">(current)</span>' : '') ?>
                     </a>
                 </li>
+                <li <?php echo($title == 'Guestbook' ? 'class="active"' : '') ?>>
+                    <a href="./guestbook">
+                        <span class="glyphicon glyphicon-book" aria-hidden="true"></span>&nbsp;Guestbook
+                        <?php echo($title == 'Guestbook' ? '<span class="sr-only">(current)</span>' : '') ?>
+                    </a>
+                </li>
             </ul>
         </div>
         <!-- /.navbar-collapse -->
@@ -69,7 +81,7 @@ $title = $view['slots']->get('title');
     <!-- /.container-fluid -->
 </nav>
 <div class="container">
-    <?php $view['slots']->output('_content') ?>
+    <?php $slots->output('_content') ?>
 </div>
 </body>
 </html>
