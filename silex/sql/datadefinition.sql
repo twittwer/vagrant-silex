@@ -5,5 +5,6 @@ CREATE TABLE blog_post (
   id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   title VARCHAR(255),
   text TEXT,
+  email VARCHAR(255),
   created_at DATE
 );

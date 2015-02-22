@@ -1,5 +1,7 @@
 <?php
-/** Template Guestbook
+/** Template Blog Entry
+ *
+ * Shows blog entry form and the existing one at the bottom.
  *
  * User: Tobias Wittwer
  * Date: 11.02.2015
@@ -7,15 +9,28 @@
  *
  * @var $view \Symfony\Component\Templating\PhpEngine
  * @var $slots \Symfony\Component\Templating\Helper\SlotsHelper
+ *
+ * @var $edit
+ * @var $error
+ * @var $id
+ * @var $date
+ * @var $text
+ * @var $email
+ * @var $user
  */
 
 $slots = $view['slots'];
-$view->extend('layout.html.php');
-$slots->set('title', "Guestbook");
+if ($edit) {
+    $view->extend('layout.html.php');
+} else {
+    $view->extend('blog_posts.html.php');
+    $slots->set('postsAtBottom', true);
+}
+$slots->set('title', "Blog");
 ?>
 
 <div class="panel panel-default">
-    <div class="panel-heading">New Entry</div>
+    <div class="panel-heading"><?= $edit ? 'Edit Post' : 'New Post' ?></div>
     <div class="panel-body">
 
         <?php if ($error) { ?>
@@ -24,7 +39,7 @@ $slots->set('title', "Guestbook");
             </div>
         <?php } ?>
 
-        <form action="./guestbook" method="post">
+        <form action="<?= $edit ? '/static/blog_edit/' . $id : '/static/blog_entry' ?>" method="post">
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group <?= (($error && $title == '') ? 'has-error' : '') ?>">
@@ -45,8 +60,8 @@ $slots->set('title', "Guestbook");
                 <textarea name="text" class="form-control" rows="3"
                           placeholder="Enter your message"><?= $text ?></textarea>
             </div>
-            <br/>
-            <button type="submit" name="send" class="btn btn-primary" value="send">Send</button>
+            <button type="submit" name="send" class="btn btn-primary"
+                    value="send"><?= $edit ? 'Save' : 'Send' ?></button>
         </form>
     </div>
 </div>
