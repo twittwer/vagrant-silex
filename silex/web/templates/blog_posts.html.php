@@ -36,10 +36,16 @@ $postsAtBottom = $slots->has('postsAtBottom') ? $slots->get('postsAtBottom') : t
                     <div class="panel-heading">
                         <a class="link-unseen"
                            href="/static/blog_post/<?= $post['id'] . '/' . urlencode($post['title']) ?>"><?= $post['title'] ?>
-                            <span class="glyphicon glyphicon-new-window" aria-hidden="true"></span></a>
+                            <small><span class="glyphicon glyphicon-new-window" aria-hidden="true"></span></small>
+                        </a>
 
-                        <div
-                            class="pull-right small"><?= ($post['user'] != null ? '<a class="link-uncolored" href="/static/profile/' . $post['user'] . '"><i>' . $post['user'] . '</i> (' : '') ?><?= $post['email'] ?><?= ($post['user'] != null ? ')</a>' : '') ?></div>
+                        <div class="pull-right small">
+                            <i>
+                                <?= date('D, d.m.', strtotime($post['created_at'])) ?>&nbsp;&#150;&nbsp;
+                                <a class="link-uncolored"
+                                   href="/static/profile/<?= $post['username'] ?>"><?= $post['username'] ?></a>
+                            </i>
+                        </div>
                     </div>
                     <div class="panel-body small-post">
                         <?= $post['text'] ?>

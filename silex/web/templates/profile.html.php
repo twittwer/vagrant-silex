@@ -14,6 +14,7 @@
  * @var $lastname
  * @var $email
  * @var $registrationDate
+ * @var $posts
  */
 
 $slots = $view['slots'];
@@ -24,6 +25,10 @@ $slots->set('title', "Profile");
 
 <div class="row">
     <div class="col-md-12">
+        <?php if ($username == $_SESSION['username']) { ?>
+            <a class="btn btn-default pull-right" href="/static/settings" role="button"><span
+                    class="glyphicon glyphicon-cog" aria-hidden="true"></span>&nbsp;Settings</a>
+        <?php } ?>
         <div class="page-header">
             <?php if ($firstname != '' && $lastname != '') { ?>
                 <h1><?= $firstname . '&nbsp;' . $lastname ?>&nbsp;
@@ -44,7 +49,18 @@ $slots->set('title', "Profile");
                 Userinformation
             </div>
             <div class="panel-body">
-                <?= $email ?>
+                <div class="row">
+                    <label for="email" class="col-md-2 text-right">Email</label>
+
+                    <div id="email" class="col-md-4"><?= $email ?></div>
+                    <label for="postcounter" class="col-md-2 text-right">Postcounter</label>
+
+                    <div id="postcounter" class="col-md-4"><?= count($posts) ?></div>
+                </div>
+                <!--                <div class="row">-->
+                <!--                    <label for="postcounter" class="col-md-2 text-right">Postcounter</label>-->
+                <!--                    <div id="postcounter" class="col-md-4">--><? //= count($posts) ?><!--</div>-->
+                <!--                </div>-->
             </div>
         </div>
     </div>

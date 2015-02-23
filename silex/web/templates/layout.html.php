@@ -1,5 +1,8 @@
 <?php
 /** Main Layout Template
+ *
+ * User: Tobias Wittwer
+ *
  * @var $view \Symfony\Component\Templating\PhpEngine
  * @var $slots \Symfony\Component\Templating\Helper\SlotsHelper
  */
@@ -8,11 +11,9 @@ $slots = $view['slots'];
 $title = $slots->get('title');
 
 $navigation = array();
-$navigation[] = array('title' => 'Home', 'icon' => 'home', 'link' => '/static/home');
-$navigation[] = array('title' => 'Music', 'icon' => 'music', 'link' => '/static/music');
-$navigation[] = array('title' => 'Profile', 'icon' => 'user', 'link' => '/static/profile/twittwer');
-$navigation[] = array('title' => 'Settings', 'icon' => 'cog', 'link' => '/static/settings');
-$navigation[] = array('title' => 'Blog', 'icon' => 'book', 'link' => '/static/blog_entry');
+$navigation[] = array('title' => 'Home', 'icon' => 'home', 'link' => '/static/home', 'public' => true);
+$navigation[] = array('title' => 'Music', 'icon' => 'music', 'link' => '/static/music', 'public' => true);
+$navigation[] = array('title' => 'Blog', 'icon' => 'book', 'link' => '/static/blog_entry', 'public' => true);
 
 ?>
 <!DOCTYPE html>
@@ -51,25 +52,52 @@ $navigation[] = array('title' => 'Blog', 'icon' => 'book', 'link' => '/static/bl
 
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <!-- Navigation { -->
             <ul class="nav navbar-nav">
-                <?php foreach ($navigation as $page) { ?>
-                    <li <?= ($page['title'] == $title ? 'class="active"' : '') ?>>
-                        <a href="<?= $page['link'] ?>">
+                <?php
+                foreach ($navigation as $page) {
+                    if ($page['public'] || $_SESSION['login']) {
+                        ?>
+                        <li <?= ($page['title'] == $title ? 'class="active"' : '') ?>>
+                            <a href="<?= $page['link'] ?>">
                             <span class="glyphicon glyphicon-<?= $page['icon'] ?>"
                                   aria-hidden="true"></span>&nbsp;<?= $page['title'] ?>
-                            <?= ($page['title'] == $title ? '<span class="sr-only">(current)</span>' : '') ?>
-                        </a>
+                                <?= ($page['title'] == $title ? '<span class="sr-only">(current)</span>' : '') ?>
+                            </a>
+                        </li>
+                    <?php
+                    }
+                }
+                ?>
+            </ul>
+            <!-- } Navigation -->
+            <!-- Login { -->
+            <ul class="nav navbar-nav navbar-right">
+                <?php if ($_SESSION['login']) { ?>
+                    <li>
+                        <p class="navbar-text">Signed&nbsp;in&nbsp;as&nbsp;
+                            <a href="/static/profile/<?= $_SESSION['username'] ?>" class="navbar-link link-undecorated">
+                                <?= $_SESSION['firstname'] != '' ? $_SESSION['firstname'] . '&nbsp;' . $_SESSION['lastname'] : $_SESSION['username'] ?>
+                                <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                            </a>
+                        </p>
+                    </li>
+                    <li>
+                        <form method="post" class="navbar-form navbar-left logout">
+                            <button type="submit" name="logout" value="1" class="btn btn-link"><span
+                                    class="glyphicon glyphicon-log-out" aria-hidden="true"></span></button>
+                        </form>
+                    </li>
+                <?php } else { ?>
+                    <li>
+                        <button type="button" class="btn btn-link login navbar-btn" data-toggle="modal"
+                                data-target="#signInModal">Sign&nbsp;in&nbsp;<span class="glyphicon glyphicon-log-in"
+                                                                                   aria-hidden="true"></span>
+                        </button>
                     </li>
                 <?php } ?>
             </ul>
-            <ul class="nav navbar-nav navbar-right">
-                <li>
-                    <button type="button" class="btn btn-default navbar-btn" data-toggle="modal" data-target="#myModal">
-                        Sign in
-                    </button>
-                </li>
-                <!--<p class="navbar-text navbar-right">Signed in as <a href="/static/profile/" class="navbar-link">Mark Otto</a></p>-->
-            </ul>
+            <!-- } Login -->
         </div>
         <!-- /.navbar-collapse -->
     </div>
@@ -80,25 +108,32 @@ $navigation[] = array('title' => 'Blog', 'icon' => 'book', 'link' => '/static/bl
 </div>
 
 <!-- Sign In Modal -->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="signInModal" tabindex="-1" role="dialog" aria-labelledby="signInModalLabel"
+     aria-hidden="true">
     <div class="modal-dialog modal-sm">
         <div class="modal-content">
-            <form class="form-signin">
+            <form method="post" class="form-signin">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                             aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="myModalLabel">Please sign in</h4>
+                    <h4 class="modal-title" id="signInModalLabel">Please sign in</h4>
                 </div>
                 <div class="modal-body">
-                    <label for="username" class="sr-only">Username</label>
-                    <input type="text" id="username" name="username" class="form-control" placeholder="Username"
-                           required autofocus>
-                    <label for="password" class="sr-only">Password</label>
-                    <input type="password" id="password" name="password" class="form-control" placeholder="Password"
-                           required>
+                    <div class="form-group">
+                        <label for="username" class="sr-only">Username</label>
+                        <input type="text" id="username" name="username" class="form-control" placeholder="Username"
+                               required autofocus>
+                    </div>
+                    <div class="form-group">
+                        <label for="password" class="sr-only">Password</label>
+                        <input type="password" id="password" name="password" class="form-control" placeholder="Password"
+                               required>
+                    </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" name="signin" class="btn btn-lg btn-primary btn-block">Sign in</button>
+                    <button type="submit" name="login" value="1" class="btn btn-lg btn-primary btn-block">Sign in
+                    </button>
+                    <a class="btn btn-default btn-block" href="/static/registration" disabled="disabled">Sign up</a>
                 </div>
             </form>
         </div>
