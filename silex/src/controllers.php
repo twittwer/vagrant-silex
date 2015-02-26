@@ -13,12 +13,17 @@ $app->get('/welcome-twig/{name}', function ($name) use ($app) {
     return $app['twig']->render('default_hello.html.twig', array('name' => $name));
 });
 
-function login($dbConnection, $login, $logout, $username, $password)
-{
-    /** @var $dbConnection Doctrine\DBAL\Connection */
+$app->before(function (Request $request, \Silex\Application $app) {
     session_start();
+    /** @var $dbConnection Doctrine\DBAL\Connection */
+    $dbConnection = $app['db'];
+    $login = $request->get('login', false);
+    $username = $request->get('username', '');
+    $password = $request->get('password', '');
+    $logout = $request->get('logout', false);
+
     if ($login && $username != '' && $password != '') {
-        $user = $dbConnection->fetchAssoc('SELECT `id`, `username`, `firstname`, `lastname`, `email` FROM `users` WHERE `username` = "' . $username . '" AND `password` = "' . md5($password) . '"');
+        $user = $dbConnection->fetchAssoc("SELECT `id`, `username`, `firstname`, `lastname`, `email` FROM `users` WHERE `username` = '$username' AND `password` = '" . md5($password) . "'");
         if ($user != null) {
             $_SESSION['login'] = true;
             $_SESSION['userId'] = $user['id'];
@@ -35,23 +40,17 @@ function login($dbConnection, $login, $logout, $username, $password)
         $_SESSION['firstname'] = null;
         $_SESSION['lastname'] = null;
     }
-}
+});
 
-$app->match('/static/home', function (Request $request) use ($app) {
-    login($app['db'], $request->get('login', '0'), $request->get('logout', '0'), $request->get('username', ''), $request->get('password', ''));
-
+$app->match('/static/home', function () use ($app) {
     return $app['templating']->render('home.html.php');
 });
 
-$app->match('/static/music', function (Request $request) use ($app) {
-    login($app['db'], $request->get('login', '0'), $request->get('logout', '0'), $request->get('username', ''), $request->get('password', ''));
-
+$app->match('/static/music', function () use ($app) {
     return $app['templating']->render('music.html.php');
 });
 
-$app->match('/static/profile/{username}', function (Request $request, $username) use ($app) {
-    login($app['db'], $request->get('login', '0'), $request->get('logout', '0'), $request->get('username', ''), $request->get('password', ''));
-
+$app->match('/static/profile/{username}', function ($username) use ($app) {
     /** @var $dbConnection Doctrine\DBAL\Connection */
     $dbConnection = $app['db'];
 
@@ -72,15 +71,44 @@ $app->match('/static/profile/{username}', function (Request $request, $username)
 });
 
 $app->match('/static/settings', function (Request $request) use ($app) {
-    login($app['db'], $request->get('login', '0'), $request->get('logout', '0'), $request->get('username', ''), $request->get('password', ''));
+    /** @var $dbConnection Doctrine\DBAL\Connection */
+    $dbConnection = $app['db'];
+    $errorPasswd = false;
+    $password = $request->get('password', '');
+    $passwd = $request->get('passwd', '');
 
-    return $app['templating']->render('settings.html.php');
+    if ($request->isMethod('POST') && $request->get('changePasswd', false)) {
+        if ($password != '' && ($password == $passwd)) {
+            $dbConnection->update('users',
+                array(
+                    'password' => md5($password)
+                ),
+                array(
+                    'id' => $_SESSION['userId']
+                )
+            );
+            return $app['templating']->render('response_panel.html.php',
+                array(
+                    'title' => 'Password Change',
+                    'responseTitle' => 'Password Changed',
+                    'responseContent' => 'Your password is changed.',
+                    'responseType' => 'success',
+                    'returnLink' => './settings'
+                ));
+        } else {
+            $errorPasswd = true;
+        }
+    }
+    return $app['templating']->render(
+        'user_settings.html.php',
+        array(
+            'errorPasswd' => $errorPasswd
+        )
+    );
 });
 
 // match ($app->match) scans for get ($app->get) and post ($app->post)
-$app->match('/static/blog_entry', function (Request $request) use ($app) {
-    login($app['db'], $request->get('login', '0'), $request->get('logout', '0'), $request->get('username', ''), $request->get('password', ''));
-
+$app->match('/static/blog', function (Request $request) use ($app) {
     /** @var $dbConnection Doctrine\DBAL\Connection */
     $dbConnection = $app['db'];
     $error = false;
@@ -104,13 +132,13 @@ $app->match('/static/blog_entry', function (Request $request) use ($app) {
                     'responseTitle' => 'Post Saved',
                     'responseContent' => 'Your inputs were proceed successfully!<!--<br/><br/>Title:<br/>' . $title . '<br/>Content:<br/>' . $text . '-->',
                     'responseType' => 'success',
-                    'returnLink' => './blog_entry'
+                    'returnLink' => './blog'
                 ));
         } else {
             $error = true;
         }
     }
-    $posts = $dbConnection->fetchAll('SELECT blog_posts.id, blog_posts.title, blog_posts.text, blog_posts.created_at, users.username AS username FROM blog_posts LEFT JOIN users ON users.id = blog_posts.user_id ORDER BY blog_posts.created_at');
+    $posts = $dbConnection->fetchAll('SELECT blog_posts.id, blog_posts.title, blog_posts.text, blog_posts.created_at, users.username AS username FROM blog_posts LEFT JOIN users ON users.id = blog_posts.user_id ORDER BY blog_posts.created_at DESC');
     return $app['templating']->render(
         'blog_form.html.php',
         array(
@@ -123,9 +151,7 @@ $app->match('/static/blog_entry', function (Request $request) use ($app) {
     );
 });
 
-$app->match('/static/blog_post/{id}/{title}', function (Request $request, $id) use ($app) {
-    login($app['db'], $request->get('login', '0'), $request->get('logout', '0'), $request->get('username', ''), $request->get('password', ''));
-
+$app->match('/static/blog_post/{id}/{title}', function ($id) use ($app) {
     /** @var $dbConnection Doctrine\DBAL\Connection */
     $dbConnection = $app['db'];
 
@@ -143,8 +169,6 @@ $app->match('/static/blog_post/{id}/{title}', function (Request $request, $id) u
 });
 
 $app->match('/static/blog_edit/{id}', function (Request $request, $id) use ($app) {
-    login($app['db'], $request->get('login', '0'), $request->get('logout', '0'), $request->get('username', ''), $request->get('password', ''));
-
     /** @var $dbConnection Doctrine\DBAL\Connection */
     $dbConnection = $app['db'];
     $error = false;
@@ -190,6 +214,82 @@ $app->match('/static/blog_edit/{id}', function (Request $request, $id) use ($app
             'title' => $title,
             'username' => $username,
             'text' => $text
+        )
+    );
+});
+
+$app->match('/static/registration', function (Request $request) use ($app) {
+    /** @var $dbConnection Doctrine\DBAL\Connection */
+    $dbConnection = $app['db'];
+    $error = false;
+    $existingUser = false;
+    $username = $request->get('username', '');
+    $email = $request->get('email', '');
+    $firstname = $request->get('firstname', '');
+    $lastname = $request->get('lastname', '');
+    $password = $request->get('password', '');
+    $passwd = $request->get('passwd', '');
+
+    if ($request->isMethod('POST') && $request->get('register', '0')) {
+        $user = $dbConnection->fetchAssoc("SELECT * FROM users WHERE username = '$username'");
+        if ($user != null) {
+            $existingUser = true;
+        }
+        if (!$existingUser && $username != '' && $email != '' && $password != '' && ($password == $passwd)) {
+            $dbConnection->insert(
+                'users',
+                array(
+                    'username' => $username,
+                    'email' => $email,
+                    'firstname' => $firstname,
+                    'lastname' => $lastname,
+                    'password' => md5($password))
+            );
+            return $app['templating']->render('response_panel.html.php',
+                array(
+                    'title' => 'Registered',
+                    'responseTitle' => 'Account Created',
+                    'responseContent' => "You are signed up successfully as $username!",
+                    'responseType' => 'success',
+                    'returnLink' => "./profile/$username"
+                ));
+        } else {
+            $error = true;
+        }
+    }
+    return $app['templating']->render(
+        'user_registration.html.php',
+        array(
+            'error' => $error,
+            'existingUser' => $existingUser,
+            'username' => $username,
+            'email' => $email,
+            'firstname' => $firstname,
+            'lastname' => $lastname
+        )
+    );
+});
+
+$app->match('/static/search', function (Request $request) use ($app) {
+    /** @var $dbConnection Doctrine\DBAL\Connection */
+    $dbConnection = $app['db'];
+    $searchkey = $request->get('searchkey', '');
+    $postsTitle = null;
+    $postsText = null;
+    $users = null;
+
+    if ($searchkey != '') {
+        $postsTitle = $dbConnection->fetchAll("SELECT blog_posts.id, blog_posts.title, blog_posts.text, blog_posts.created_at, users.username AS username FROM blog_posts LEFT JOIN users ON users.id = blog_posts.user_id WHERE title LIKE '%$searchkey%' ORDER BY blog_posts.created_at DESC");
+        $postsText = $dbConnection->fetchAll("SELECT blog_posts.id, blog_posts.title, blog_posts.text, blog_posts.created_at, users.username AS username FROM blog_posts LEFT JOIN users ON users.id = blog_posts.user_id WHERE text LIKE '%$searchkey%' AND title NOT LIKE '%$searchkey%' ORDER BY blog_posts.created_at DESC");
+        $users = $dbConnection->fetchAll("SELECT * FROM users WHERE username LIKE '%$searchkey%'");
+    }
+    return $app['templating']->render(
+        'search.html.php',
+        array(
+            'searchkey' => $searchkey,
+            'postsTitle' => $postsTitle,
+            'postsText' => $postsText,
+            'users' => $users
         )
     );
 });

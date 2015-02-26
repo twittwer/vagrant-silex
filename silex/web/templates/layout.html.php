@@ -13,7 +13,7 @@ $title = $slots->get('title');
 $navigation = array();
 $navigation[] = array('title' => 'Home', 'icon' => 'home', 'link' => '/static/home', 'public' => true);
 $navigation[] = array('title' => 'Music', 'icon' => 'music', 'link' => '/static/music', 'public' => true);
-$navigation[] = array('title' => 'Blog', 'icon' => 'book', 'link' => '/static/blog_entry', 'public' => true);
+$navigation[] = array('title' => 'Blog', 'icon' => 'book', 'link' => '/static/blog', 'public' => true);
 
 ?>
 <!DOCTYPE html>
@@ -36,7 +36,7 @@ $navigation[] = array('title' => 'Blog', 'icon' => 'book', 'link' => '/static/bl
     <base href="http://localhost:8001/static/">
 </head>
 <body>
-<nav class="navbar navbar-inverse">
+<nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container-fluid">
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
@@ -71,6 +71,12 @@ $navigation[] = array('title' => 'Blog', 'icon' => 'book', 'link' => '/static/bl
                 ?>
             </ul>
             <!-- } Navigation -->
+            <form method="post" action="/static/search" class="navbar-form navbar-left" role="search">
+                <div class="form-group">
+                    <input type="text" name="searchkey" class="form-control" placeholder="Search">
+                </div>
+                <!--                <button type="submit" name="search" class="btn btn-default">Search</button>-->
+            </form>
             <!-- Login { -->
             <ul class="nav navbar-nav navbar-right">
                 <?php if ($_SESSION['login']) { ?>
@@ -106,6 +112,9 @@ $navigation[] = array('title' => 'Blog', 'icon' => 'book', 'link' => '/static/bl
 <div class="container">
     <?php $slots->output('_content') ?>
 </div>
+<footer>
+    &#169;&nbsp;Tobias&nbsp;Wittwer&nbsp;2015<?= (date('Y') != '2015') ? '&nbsp;-&nbsp;' . date('Y') : '' ?>
+</footer>
 
 <!-- Sign In Modal -->
 <div class="modal fade" id="signInModal" tabindex="-1" role="dialog" aria-labelledby="signInModalLabel"
@@ -133,7 +142,7 @@ $navigation[] = array('title' => 'Blog', 'icon' => 'book', 'link' => '/static/bl
                 <div class="modal-footer">
                     <button type="submit" name="login" value="1" class="btn btn-lg btn-primary btn-block">Sign in
                     </button>
-                    <a class="btn btn-default btn-block" href="/static/registration" disabled="disabled">Sign up</a>
+                    <a class="btn btn-default btn-block" href="/static/registration">Sign up</a>
                 </div>
             </form>
         </div>

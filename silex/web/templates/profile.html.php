@@ -18,8 +18,7 @@
  */
 
 $slots = $view['slots'];
-$view->extend('blog_posts.html.php');
-$slots->set('postsAtBottom', true);
+$view->extend('layout.html.php');
 $slots->set('title', "Profile");
 ?>
 
@@ -64,4 +63,7 @@ $slots->set('title', "Profile");
             </div>
         </div>
     </div>
+</div>
+<div class="row">
+    <?= $view->render('blog_posts.html.php', array('posts' => $posts, 'grid' => true)) ?>
 </div>
