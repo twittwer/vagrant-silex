@@ -1,6 +1,8 @@
 <?php
 /** Main Layout Template
  *
+ * Defines the main layout structure around the content of all other templates.
+ *
  * User: Tobias Wittwer
  *
  * @var $view \Symfony\Component\Templating\PhpEngine
@@ -17,18 +19,21 @@ $navigation[] = array('title' => 'Blog', 'icon' => 'book', 'link' => '/static/bl
 
 ?>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Webengine | <?= $title ?></title>
-    <link rel="stylesheet" href="/vendor/css/main.css">
+    <title>TheBlog | <?= $title ?></title>
+    <meta charset="utf-8"/>
     <!-- Bootstrap - Latest compiled and minified CSS -->
     <link rel="stylesheet" href="/vendor/bootstrap/dist/css/bootstrap.min.css">
     <!-- Bootstrap - Optional theme -->
     <link rel="stylesheet" href="/vendor/bootstrap/dist/css/bootstrap-theme.min.css">
+    <!-- Personal CSS -->
+    <link rel="stylesheet" href="/vendor/css/main.css">
     <!-- JQuery -->
     <script src="/vendor/jquery/dist/jquery.min.js"></script>
     <!-- Bootstrap - JavaScript -->
     <script src="/vendor/bootstrap/dist/js/bootstrap.min.js"></script>
+
     <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">-->
     <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">-->
     <!--<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>-->
@@ -47,7 +52,7 @@ $navigation[] = array('title' => 'Blog', 'icon' => 'book', 'link' => '/static/bl
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="./home">Webengine</a>
+            <a class="navbar-brand" href="./home">TheBlog</a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
@@ -81,7 +86,7 @@ $navigation[] = array('title' => 'Blog', 'icon' => 'book', 'link' => '/static/bl
             <ul class="nav navbar-nav navbar-right">
                 <?php if ($_SESSION['login']) { ?>
                     <li>
-                        <p class="navbar-text">Signed&nbsp;in&nbsp;as&nbsp;
+                        <p class="navbar-text"><span class="visible-xs-inline">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="hidden-sm">Signed&nbsp;in&nbsp;as&nbsp;</span>
                             <a href="/static/profile/<?= $_SESSION['username'] ?>" class="navbar-link link-undecorated">
                                 <?= $_SESSION['firstname'] != '' ? $_SESSION['firstname'] . '&nbsp;' . $_SESSION['lastname'] : $_SESSION['username'] ?>
                                 <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
@@ -90,15 +95,16 @@ $navigation[] = array('title' => 'Blog', 'icon' => 'book', 'link' => '/static/bl
                     </li>
                     <li>
                         <form method="post" class="navbar-form navbar-left logout">
-                            <button type="submit" name="logout" value="1" class="btn btn-link"><span
+                            <button type="submit" name="logout" value="1" class="btn btn-link link-undecorated"><span
+                                    class="visible-xs-inline">&nbsp;&nbsp;&nbsp;&nbsp;Logout&nbsp;</span><span
                                     class="glyphicon glyphicon-log-out" aria-hidden="true"></span></button>
                         </form>
                     </li>
                 <?php } else { ?>
                     <li>
                         <button type="button" class="btn btn-link login navbar-btn" data-toggle="modal"
-                                data-target="#signInModal">Sign&nbsp;in&nbsp;<span class="glyphicon glyphicon-log-in"
-                                                                                   aria-hidden="true"></span>
+                                data-target="#signInModal"><span class="visible-sm-inline visible-xs-inline">&nbsp;&nbsp;&nbsp;&nbsp;</span>Sign&nbsp;in&nbsp;<span
+                                class="glyphicon glyphicon-log-in" aria-hidden="true"></span>
                         </button>
                     </li>
                 <?php } ?>

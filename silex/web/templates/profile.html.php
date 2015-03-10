@@ -1,5 +1,7 @@
 <?php
-/** Template
+/** Template User Profile
+ *
+ * Shows detailed information about a user and a list of his blog posts.
  *
  * User: Tobias Wittwer
  * Date: 03.02.2015
@@ -49,17 +51,11 @@ $slots->set('title', "Profile");
             </div>
             <div class="panel-body">
                 <div class="row">
-                    <label for="email" class="col-md-2 text-right">Email</label>
-
-                    <div id="email" class="col-md-4"><?= $email ?></div>
-                    <label for="postcounter" class="col-md-2 text-right">Postcounter</label>
-
-                    <div id="postcounter" class="col-md-4"><?= count($posts) ?></div>
+                    <div class="col-md-2 show-label">Email</div>
+                    <div class="col-md-4"><?= $email ?></div>
+                    <div class="col-md-2 show-label">Postcounter</div>
+                    <div class="col-md-4"><?= count($posts) ?></div>
                 </div>
-                <!--                <div class="row">-->
-                <!--                    <label for="postcounter" class="col-md-2 text-right">Postcounter</label>-->
-                <!--                    <div id="postcounter" class="col-md-4">--><? //= count($posts) ?><!--</div>-->
-                <!--                </div>-->
             </div>
         </div>
     </div>

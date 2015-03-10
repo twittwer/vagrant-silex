@@ -1,7 +1,7 @@
 <?php
 /** Template No Access
  *
- * Show the user he's entering the internal area without permission.
+ * Show the user that he's entering the internal area without permission.
  *
  * User: Tobias Wittwer
  * Date: 25.02.2015

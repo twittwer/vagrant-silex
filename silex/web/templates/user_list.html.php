@@ -1,10 +1,11 @@
 <?php
 /** Template User List
  *
- * Required $users
- *      array of users (assocArray)
- * Required $grid
- *      to decide if the users are shown in grid or among each other
+ * Shows list of users.
+ *
+ * Required
+ *      $users      array of users (assocArray)
+ *      $grid       to decide if the users are shown in grid or among each other
  *
  * User: Tobias Wittwer
  * Date: 25.02.2015

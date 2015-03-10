@@ -1,12 +1,15 @@
 <?php
-/** Template For Response Panel
+/** Template Response Panel
  *
- * Needs:
- *  title              title of page
- *  responseType      class of panel (primary, success, info, warning, danger)
- *  responseTitle     title of panel
- *  responseContent   content of panel
- *  [returnLink]      link to site the user will be redirected with close button
+ * Template to display the result of an action.
+ *
+ * Required
+ *      $title             page title
+ *      $responseType      panel class (primary, success, info, warning, danger)
+ *      $responseTitle     title of panel
+ *      $responseContent   content of panel
+ * Optional
+ *      [$returnLink]      link to site the user will be redirected with close button
  *
  * User: Tobias Wittwer
  * Date: 18.02.2015

@@ -1,10 +1,11 @@
 <?php
 /** Template Blog Post List
  *
- * Required $posts
- *      array of blog posts (assocArray)
- * Required $grid
- *      to decide if the posts are shown in grid or among each other
+ * Shows list of blog posts.
+ *
+ * Required
+ *      $posts      array of blog posts (assocArray)
+ *      $grid       to decide if the posts are shown in grid or among each other
  *
  * User: Tobias Wittwer
  * Date: 18.02.2015
@@ -27,7 +28,7 @@
 
                 <div class="pull-right small">
                     <i>
-                        <?= date('D, d.m.', strtotime($post['created_at'])) ?>&nbsp;&#150;&nbsp;
+                        <?= date('D, d.m.', strtotime($post['created_at'])) ?>&nbsp;&ndash;&nbsp;
                         <a class="link-uncolored"
                            href="/static/profile/<?= $post['username'] ?>"><?= $post['username'] ?></a>
                     </i>

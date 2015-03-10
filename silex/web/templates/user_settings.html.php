@@ -1,6 +1,8 @@
 <?php
 /** Template User Settings
  *
+ * Lets the user configure his account.
+ *
  * User: Tobias Wittwer
  * Date: 24.02.2015
  * Time: 17:00

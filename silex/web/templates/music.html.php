@@ -1,5 +1,5 @@
 <?php
-/** Template
+/** Template Music
  *
  * User: Tobias Wittwer
  * Date: 03.02.2015

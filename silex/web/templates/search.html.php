@@ -1,6 +1,9 @@
 <?php
 /** Template Search
  *
+ * Lets the user search in the database for blog posts and users.
+ * Shows search results of navbar search.
+ *
  * User: Tobias Wittwer
  * Date: 25.02.2015
  * Time: 09:37

@@ -1,7 +1,7 @@
 <?php
-/** Template Blog Entry
+/** Template User Registration
  *
- * Shows blog entry form and the existing one at the bottom.
+ * Shows form to register a new user.
  *
  * User: Tobias Wittwer
  * Date: 11.02.2015
